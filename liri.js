@@ -18,16 +18,18 @@ var userType = process.argv;
 
 var firstRequest = userType[2];
 var secondRequest = userType[3];
-var newArray = [];
+var saveStr = "";
+var saveArray = [];
+var nextLine = "\n";
 
 
 
 
 
 
-var movie = function () {
 
 
+var movie = function (secondRequest) {
     if (secondRequest) {
 
         let queryUrl = "http://www.omdbapi.com/?t=" + secondRequest + "&y=&plot=short&apikey=trilogy";
@@ -37,19 +39,31 @@ var movie = function () {
                 console.log("here is a error");
             }
 
-
             if (!error && response.statusCode === 200) {
                 console.log("======================================================================");
 
-                console.log("Title of the movie: ", JSON.parse(body).Title); // * Title of the movie.
-                console.log("Year the movie came out: ", JSON.parse(body).Year); // * Year the movie came out.
-                console.log("IMDB Rating of the movie: ", JSON.parse(body).imdbRating); // * IMDB Rating of the movie.
-                console.log(JSON.parse(body).Ratings[1].Source + " Rating of the movie is " + JSON.parse(body).Ratings[1].Value);
-                // * Rotten Tomatoes Rating of the movie.
-                console.log("Country where the movie was produced: ", JSON.parse(body).Country); // * Country where the movie was produced.
-                console.log("Language of the movie: ", JSON.parse(body).Language); // * Language of the movie.
-                console.log("Plot of the movie: ", JSON.parse(body).Plot); // * Plot of the movie.
-                console.log("Actors in the movie: ", JSON.parse(body).Actors); // * Actors in the movie.
+                console.log("Title of the movie: ", JSON.parse(body).Title  // * Title of the movie.
+                + "\nYear the movie came out: ", JSON.parse(body).Year // * Year the movie came out.
+                + "\nIMDB Rating of the movie: ", JSON.parse(body).imdbRating // * IMDB Rating of the movie.
+                + "\nRotten Tomatoes Rating of the movie is " + JSON.parse(body).Ratings[1].Value
+                + "\nCountry where the movie was produced: ", JSON.parse(body).Country // * Country where the movie was produced.
+                + "\nLanguage of the movie: ", JSON.parse(body).Language // * Language of the movie.
+                + "\nPlot of the movie: ", JSON.parse(body).Plot // * Plot of the movie.
+                + "\nActors in the movie: ", JSON.parse(body).Actors); // * Actors in the movie.
+
+
+                saveStr = "Title of the movie: " + JSON.parse(body).Title  // * Title of the movie.
+                + "\nYear the movie came out: " + JSON.parse(body).Year // * Year the movie came out.
+                + "\nIMDB Rating of the movie: " + JSON.parse(body).imdbRating // * IMDB Rating of the movie.
+                + "\nRotten Tomatoes Rating of the movie is " + JSON.parse(body).Ratings[1].Value
+                + "\nCountry where the movie was produced: " + JSON.parse(body).Country // * Country where the movie was produced.
+                + "\nLanguage of the movie: " + JSON.parse(body).Language // * Language of the movie.
+                + "\nPlot of the movie: "+ JSON.parse(body).Plot // * Plot of the movie.
+                + "\nActors in the movie: " +  JSON.parse(body).Actors;
+
+                // console.log(saveStr);
+
+                saveData();
             };
         });
 
@@ -64,16 +78,24 @@ var movie = function () {
             }
             if (!error && response.statusCode === 200) {
                 console.log("======================================================================");
-           
-                console.log("Title of the movie: ", JSON.parse(body).Title); // * Title of the movie.
-                console.log("Year the movie came out: ", JSON.parse(body).Year); // * Year the movie came out.
-                console.log("IMDB Rating of the movie: ", JSON.parse(body).imdbRating); // * IMDB Rating of the movie.
-                console.log(JSON.parse(body).Ratings[1].Source + " Rating of the movie is " + JSON.parse(body).Ratings[1].Value);
-                // * Rotten Tomatoes Rating of the movie.
-                console.log("Country where the movie was produced: ", JSON.parse(body).Country); // * Country where the movie was produced.
-                console.log("Language of the movie: ", JSON.parse(body).Language); // * Language of the movie.
-                console.log("Plot of the movie: ", JSON.parse(body).Plot); // * Plot of the movie.
-                console.log("Actors in the movie: ", JSON.parse(body).Actors); // * Actors in the movie.
+                console.log("Title of the movie: ", JSON.parse(body).Title  // * Title of the movie.
+                + "\nYear the movie came out: ", JSON.parse(body).Year // * Year the movie came out.
+                + "\nIMDB Rating of the movie: ", JSON.parse(body).imdbRating // * IMDB Rating of the movie.
+                + "\nRotten Tomatoes Rating of the movie is " + JSON.parse(body).Ratings[1].Value
+                + "\nCountry where the movie was produced: ", JSON.parse(body).Country // * Country where the movie was produced.
+                + "\nLanguage of the movie: ", JSON.parse(body).Language // * Language of the movie.
+                + "\nPlot of the movie: ", JSON.parse(body).Plot // * Plot of the movie.
+                + "\nActors in the movie: ", JSON.parse(body).Actors); // * Actors in the movie.
+
+                saveStr = "Title of the movie: " + JSON.parse(body).Title  // * Title of the movie.
+                + "\nYear the movie came out: " + JSON.parse(body).Year // * Year the movie came out.
+                + "\nIMDB Rating of the movie: " + JSON.parse(body).imdbRating // * IMDB Rating of the movie.
+                + "\nRotten Tomatoes Rating of the movie is " + JSON.parse(body).Ratings[1].Value
+                + "\nCountry where the movie was produced: " + JSON.parse(body).Country // * Country where the movie was produced.
+                + "\nLanguage of the movie: " + JSON.parse(body).Language // * Language of the movie.
+                + "\nPlot of the movie: "+ JSON.parse(body).Plot // * Plot of the movie.
+                + "\nActors in the movie: " +  JSON.parse(body).Actors;
+                saveData();
             };
         });
     };
@@ -88,18 +110,23 @@ var tweets = function () {
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             for (let i = 0; i < tweets.length; i++) {
-                console.log(tweets[i].text);
+                // console.log(tweets[i].text);
+                saveArray.push(tweets[i].text);
             }
         } else {
             console.log("something wrong");
         }
+
+        // console.log(saveArray);
+        saveData();
+       
     });
 };
 
 
 
 
-var spotifyPlay = function () {
+var spotifyPlay = function (secondRequest){
 
     // If no song is provided then your program will default to "The Sign" by Ace of Base.
 
@@ -107,7 +134,7 @@ var spotifyPlay = function () {
         spotify.search({
             type: 'track',
             query: secondRequest,
-            limit: 5
+            limit: 2
         }, function (err, data) {
             if (err) {
                 return console.log('Error occurred: ' + err);
@@ -118,13 +145,20 @@ var spotifyPlay = function () {
 
 
             for (let i = 0; i < data.tracks.items.length; i++) {
-
                 console.log("======================================================================");
-                console.log("the Artist is: ", data.tracks.items[i].artists[0].name);
-                console.log("The song's name: ", data.tracks.items[i].name); //Die A Happy Man
-                console.log("A preview link of the song from Spotify: ", data.tracks.items[i].external_urls.spotify);
-                console.log("The album that the song is from: ", data.tracks.items[i].album.name); //Tangled Up
-            }
+                console.log("the Artist is: ", data.tracks.items[i].artists[0].name
+                 + "\nThe song's name: ", data.tracks.items[i].name
+                 + "\nA preview link of the song from Spotify: ", data.tracks.items[i].external_urls.spotify
+                 + "\nThe album that the song is from: ", data.tracks.items[i].album.name);
+
+              saveStr = "the Artist is: "+ data.tracks.items[i].artists[0].name
+              + "\nThe song's name: "+ data.tracks.items[i].name
+              + "\nA preview link of the song from Spotify: "+ data.tracks.items[i].external_urls.spotify
+              + "\nThe album that the song is from: "+ data.tracks.items[i].album.name;
+              saveData();
+                };
+            // console.log(saveArray);
+          
         });
 
     } else {
@@ -140,13 +174,18 @@ var spotifyPlay = function () {
             for (let i = 0; i < data.tracks.items.length; i++) {
 
                 if (data.tracks.items[i].name == "The Sign" && data.tracks.items[i].artists[0].name == "Ace of Base") {
-                    console.log("the Artist is: ", data.tracks.items[i].artists[0].name);
-                    console.log("The song's name: ", data.tracks.items[i].name);
-                    console.log("A preview link of the song from Spotify: ", data.tracks.items[i].external_urls.spotify);
-                    console.log("The album that the song is from: ", data.tracks.items[i].album.name);
+                    console.log("the Artist is: ", data.tracks.items[i].artists[0].name
+                    + "\nThe song's name: ", data.tracks.items[i].name
+                    + "\nA preview link of the song from Spotify: ", data.tracks.items[i].external_urls.spotify
+                    + "\nThe album that the song is from: ", data.tracks.items[i].album.name);
                     console.log("======================================================================");
+                    saveStr = "the Artist is: "+ data.tracks.items[i].artists[0].name
+                    + "\nThe song's name: "+ data.tracks.items[i].name
+                    + "\nA preview link of the song from Spotify: "+ data.tracks.items[i].external_urls.spotify
+                    + "\nThe album that the song is from: "+ data.tracks.items[i].album.name;
+                    saveData();
                 } else {
-                    // console.log("wrong");
+                    //  console.log("wrong");
                 }
 
             }
@@ -169,7 +208,7 @@ var justDoIt = function () {
         }
       
         // We will then print the contents of data
-        console.log(data);
+        // console.log(data);
       
         // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
@@ -177,13 +216,80 @@ var justDoIt = function () {
         // We will then re-display the content as an array for later use.
         console.log(dataArr);
 
+        for(let k = 0 ; k < dataArr.length ; k++){
+            if(dataArr[k] === "movie-this" || dataArr[k] === "my-tweets" || dataArr[k] === "spotify-this-song" || dataArr[k] === "do-what-it-says" ){
+                if(dataArr[k+1] !== "movie-this" || dataArr[k+1] !== "my-tweets" || dataArr[k+1] !== "spotify-this-song" || dataArr[k+1] !== "do-what-it-says"){
+                    switch(dataArr[k]){
+                        case "movie-this":
+                        movie(dataArr[k+1]);
+                        break;
+                
+                    case "my-tweets":
+                        tweets();
+                        break;
+                
+                    case "spotify-this-song":
+                        spotifyPlay(dataArr[k+1]);
+                        break;
+                
+                    case "do-what-it-says":
+                        console.log("you need to try another key word");
+                        break;
+                
+                    default:
+                        console.log("Enter wrong in second switch");
+                    }
+                }else{
+                    switch(dataArr[k]){
+                        case "movie-this":
+                        movie();
+                        break;
+                
+                    case "my-tweets":
+                        tweets();
+                        break;
+                
+                    case "spotify-this-song":
+                        spotifyPlay();
+                        break;
+                
+                    case "do-what-it-says":
+                        console.log("you need to try another key word");
+                        break;
+                
+                    default:
+                        console.log("Enter wrong in second switch");
+                    }
+    
 
-        firstRequest = dataArr[0];
-        secondRequest = dataArr[1];
 
-        if(firstRequest === "spotify-this-song"){
-            spotifyPlay();
+                }
+            }
+
         }
+        // var first = dataArr[0];
+        // var second = dataArr[1];
+
+        // switch(first){
+        //     case "movie-this":
+        //     movie(second);
+        //     break;
+    
+        // case "my-tweets":
+        //     tweets();
+        //     break;
+    
+        // case "spotify-this-song":
+        //     spotifyPlay(second);
+        //     break;
+    
+        // case "do-what-it-says":
+        //     console.log("you need to try another key word");
+        //     break;
+    
+        // default:
+        //     console.log("Enter wrong in second switch");
+        // }
       });
 };
 
@@ -209,7 +315,7 @@ switch (firstRequest) {
         break;
 
     default:
-        console.log("enter wrong");
+    console.log("Enter wrong in first switch");
 
 };
 
@@ -226,19 +332,17 @@ function read(){
     }
   
     // We will then print the contents of data
-    console.log(data);
+    // console.log(data);
     // console.log(typeof(data));
     lastchar = data.charAt(data.length - 1);
-    console.log(lastchar);
+    // console.log(lastchar);
   });
 };
 
 
+
 if(firstRequest && secondRequest){
-    read();
-  if(lastchar == ","){
-
-    fs.appendFile("log.txt", firstRequest+","+ secondRequest, function(err) {
+    fs.appendFile("log.txt", firstRequest+","+ secondRequest + nextLine, function(err) {
 
         // If an error was experienced we say it.
         if (err) {
@@ -247,63 +351,63 @@ if(firstRequest && secondRequest){
       
         // If no error is experienced, we'll log the phrase "Content Added" to our node console.
         else {
-          console.log("Content Added!");
+          console.log("Content key word Added!");
         }
       
       });
-
-
-  }else {
-    fs.appendFile("log.txt", ","+ firstRequest+","+ secondRequest, function(err) {
-
-        // If an error was experienced we say it.
-        if (err) {
-          console.log(err);
-        }
-      
-        // If no error is experienced, we'll log the phrase "Content Added" to our node console.
-        else {
-          console.log("Content Added!");
-        }
-      
-      });
-
-
-  }
   
 }else{
+    fs.appendFile("log.txt", firstRequest+ nextLine , function(err) {
+    
+        // If an error was experienced we say it.
+        if (err) {
+          console.log(err);
+        }
+      
+        // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+        else {
+          console.log("Content key word Added!");
+        }
+      
+      });
 
-    read();
-    if(lastchar == ","){
-        fs.appendFile("log.txt", firstRequest+"," , function(err) {
-    
+};
+  
+
+
+var saveData = function(){
+
+    if( firstRequest === "my-tweets"){
+        fs.appendFile("log.txt", saveArray + nextLine, function(err) {
+
             // If an error was experienced we say it.
             if (err) {
               console.log(err);
             }
-          
             // If no error is experienced, we'll log the phrase "Content Added" to our node console.
             else {
               console.log("Content Added!");
             }
-          
           });
-    
-    
-      }else{
-        fs.appendFile("log.txt", ","+firstRequest , function(err) {
-    
+
+    }else{
+        fs.appendFile("log.txt", saveStr + nextLine, function(err) {
+
             // If an error was experienced we say it.
             if (err) {
               console.log(err);
             }
-          
             // If no error is experienced, we'll log the phrase "Content Added" to our node console.
             else {
               console.log("Content Added!");
             }
-          
           });
-      }
+
+
+    }
+
+    
+
+
 }
 
