@@ -21,15 +21,11 @@ var secondRequest = userType[3];
 var saveStr = "";
 var saveArray = [];
 var nextLine = "\n";
+var line = "=====================================================================";
 
 
 
-
-
-
-
-
-var movie = function (secondRequest) {
+var movie = function () {
     if (secondRequest) {
 
         let queryUrl = "http://www.omdbapi.com/?t=" + secondRequest + "&y=&plot=short&apikey=trilogy";
@@ -110,7 +106,7 @@ var tweets = function () {
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             for (let i = 0; i < tweets.length; i++) {
-                // console.log(tweets[i].text);
+                console.log(tweets[i].text);
                 saveArray.push(tweets[i].text);
             }
         } else {
@@ -118,7 +114,18 @@ var tweets = function () {
         }
 
         // console.log(saveArray);
-        saveData();
+        // saveData();
+        fs.appendFile("log.txt", saveArray + nextLine + line + nextLine, function(err) {
+
+            // If an error was experienced we say it.
+            if (err) {
+              console.log(err);
+            }
+            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+            else {
+              console.log("Content Added!");
+            }
+          });
        
     });
 };
@@ -376,38 +383,17 @@ if(firstRequest && secondRequest){
 
 
 var saveData = function(){
-
-    if( firstRequest === "my-tweets"){
-        fs.appendFile("log.txt", saveArray + nextLine, function(err) {
-
-            // If an error was experienced we say it.
-            if (err) {
-              console.log(err);
-            }
-            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
-            else {
-              console.log("Content Added!");
-            }
-          });
-
-    }else{
-        fs.appendFile("log.txt", saveStr + nextLine, function(err) {
-
-            // If an error was experienced we say it.
-            if (err) {
-              console.log(err);
-            }
-            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
-            else {
-              console.log("Content Added!");
-            }
-          });
-
-
-    }
-
     
+        fs.appendFile("log.txt", saveStr + nextLine + line + nextLine, function(err) {
 
-
+            // If an error was experienced we say it.
+            if (err) {
+              console.log(err);
+            }
+            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+            else {
+              console.log("Content Added!");
+            }
+          });
 }
 
